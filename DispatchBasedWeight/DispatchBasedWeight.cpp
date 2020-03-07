@@ -29,7 +29,7 @@ accessServer * getAccessServer(accessServer arrAccSvr[], unsigned int eleNum)
 	{
 		return NULL;
 	}
-	//sataic, sum of weight, so no need to sum every request
+	//static, sum of weight, so no need to sum for everytime 
 	if (tNow - lastUpdateTime > CacheTime)
 	{
 		lastUpdateTime = tNow;
