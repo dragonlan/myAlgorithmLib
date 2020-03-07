@@ -21,7 +21,7 @@ void updateAccessServerArray(accessServer arrAccSvr[],unsigned int eleNum)
 accessServer * getAccessServer(accessServer arrAccSvr[], unsigned int eleNum)
 {
 	static unsigned int lastUpdateTime = 0;
-	static int allWeight;
+	static int allWeight = 0;
 	unsigned int tNow = time(NULL);
 	int iRandWeight;
 
@@ -29,7 +29,7 @@ accessServer * getAccessServer(accessServer arrAccSvr[], unsigned int eleNum)
 	{
 		return NULL;
 	}
-
+	//sataic, sum of weight, so no need to sum every request
 	if (tNow - lastUpdateTime > CacheTime)
 	{
 		lastUpdateTime = tNow;
@@ -65,7 +65,6 @@ int main(int argc, char **argv) {
 	unsigned int aNum = sizeof(a)/sizeof(accessServer);
 	accessServer *dstSvr = NULL;
 
-	printf("hello world\n");
 	srand(time(NULL));
 	for(int i = 0; i < aNum; i++)
 	{
