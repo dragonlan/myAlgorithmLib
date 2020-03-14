@@ -12,6 +12,8 @@
 #include <time.h>
 #include <cstdlib>
 
+#include "MurmurHash3.h"
+
 using namespace std;
 
 
@@ -44,7 +46,7 @@ template <class T>
 class UniformHashHandle{
 public:
 	UniformHashHandle():_last_update_time(0), _servers(){}
-	int UniformHashInit(const std::set<_server<T> > &newservers);
+	int UniformHashCircleRefresh(const std::set<_server<T> > &newservers);
 
 	const _server<T>* getServer(unsigned int key);
 
@@ -52,14 +54,22 @@ public:
 	int IsSameServer(const _server<T> &s, const _server<T> &d);
 	int IsDiff(const std::set<_server<T> > &s, const std::set<_server<T> > &d);
 
-	inline unsigned int JSHash(const char * str, int len){
+	inline unsigned int MyHash(const char * str, int len){
 		unsigned int hash = 1315423911;
 		for (size_t i = 0; i < len; i++)
 		{
-			hash ^= ((hash << 5) + str[i] + (hash >> 2));
+			hash = ((hash^str[i])<<8) + (str[i]*131313)%13131;
+			hash ^= ((hash << 5) + (hash >> 2));
 		};
 		return hash;
 	};
+	inline uint32_t MurmurHash32(const char *str, size_t len)
+	{
+	    uint32_t val;
+	    MurmurHash3_x86_32(str, len, 0, &val);
+	    return val;
+	}
+
 private:
 	struct _vnode{
 		_vnode():hash_val(0),psvr(NULL){}
