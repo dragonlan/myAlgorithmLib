@@ -4,7 +4,7 @@ CXX = g++
 
 GCCVER := $(shell $(CC) -dumpversion | awk -F. '{ print $$1"."$$2}' )
 
-OBJ_DIR = ../build
+OBJ_DIR = ./
 LIB_DIR = ../lib
 
 CFLAGS  = -g -Werror -Wall -O2 -pipe -fno-ident -D_GNU_SOURCE -D_REENTRANT -DNDEBUG 
@@ -25,8 +25,8 @@ C_SRC = $(wildcard *.c) $(wildcard */*.c)
 CPP_OBJS = $(CPP_SRC:%.cpp=$(OBJ_DIR)/%.o)
 C_OBJS   = $(C_SRC:%.c=$(OBJ_DIR)/%.o)
 
-OBJ = DispatchBaseCoHash
-all: $(OBJ)
+TARGET = DispatchBaseCoHash
+all: $(TARGET)
 
 prepare:
 	@-mkdir -p $(OBJ_DIR)
@@ -50,10 +50,11 @@ $(C_OBJS): $(OBJ_DIR)/%.o: %.c
 
 distclean:
 	@echo -e "cleaning...\n" 
-	rm -rf $(OBJ)
+	rm -rf $(OBJ) $(TARGET)
 
 
 clean:
+	@echo -e $(C_OBJ) $(CPP_OBJS)
 	@echo -e "cleaning...\n" 
-	rm -rf $(OBJ)
+	rm -rf $(C_OBJ) $(CPP_OBJS) $(TARGET)
 
